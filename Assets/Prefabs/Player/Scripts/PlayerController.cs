@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public Vector2 FrameInput => _frameInput.Move;
     public event Action<bool, float> GroundedChanged;
     public event Action Jumped;
+    public event Action Flutter;
 
     #endregion
 
@@ -220,5 +221,6 @@ public interface IPlayerController
     public event Action<bool, float> GroundedChanged;
 
     public event Action Jumped;
+    public event Action Flutter;
     public Vector2 FrameInput { get; }
 }
