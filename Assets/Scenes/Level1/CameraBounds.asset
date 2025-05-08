@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: CameraBounds
   m_EditorClassIdentifier: 
   LeftBound: 0
-  RightBound: 150
+  RightBound: 142
   TopBound: 100
   BottomBound: -6
