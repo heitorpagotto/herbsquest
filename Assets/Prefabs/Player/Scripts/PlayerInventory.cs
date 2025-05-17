@@ -1,10 +1,16 @@
+using System;
+using Enums;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
+    [SerializeField]
     private int MaxHealth = 2;
+    
+    [SerializeField]
     private int CurrentHealth = 2;
 
+    [SerializeField]
     private int Coins = 0;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,5 +23,15 @@ public class PlayerInventory : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("123");
+        if (other.CompareTag(ECollectibles.Coin.ToString()))
+        {
+            other.gameObject.SetActive(false);
+            Coins++;
+        }
     }
 }

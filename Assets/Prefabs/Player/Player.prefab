@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 3099070238170201730}
   - component: {fileID: 5314624897724837996}
   - component: {fileID: 915234420395656545}
+  - component: {fileID: 8913688138745477719}
   m_Layer: 7
   m_Name: herb
   m_TagString: Untagged
@@ -199,3 +200,15 @@ CapsuleCollider2D:
   m_Offset: {x: -0.024984837, y: 0.046400785}
   m_Size: {x: 0.9587059, y: 2.0971985}
   m_Direction: 0
+--- !u!114 &8913688138745477719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2636713511258185428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faff6c8700c49e84584ffb48e5352fca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
