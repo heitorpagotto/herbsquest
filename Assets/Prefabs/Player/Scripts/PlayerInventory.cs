@@ -24,13 +24,14 @@ public class PlayerInventory : MonoBehaviour
     {
         
     }
+    
+    
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("123");
         if (other.CompareTag(ECollectibles.Coin.ToString()))
         {
-            other.gameObject.SetActive(false);
+            other.GetComponent<CoinBehaviour>().Collect();
             Coins++;
         }
     }

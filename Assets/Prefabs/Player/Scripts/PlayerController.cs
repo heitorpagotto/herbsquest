@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private Vector2 _frameVelocity;
     private bool _cachedQueryStartInColliders;
     private SpriteRenderer _spriteRenderer;
+    private Animator _animator;
 
     #region Interface
 
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _rb = GetComponent<Rigidbody2D>();
         _col = GetComponent<CapsuleCollider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
 
         _cachedQueryStartInColliders = Physics2D.queriesStartInColliders;
     }
@@ -118,6 +120,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
             _frameLeftGrounded = _time;
             GroundedChanged?.Invoke(false, 0);
         }
+        
+        _animator.SetBool("jumping", !_grounded);
 
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
     }
@@ -175,6 +179,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
             _spriteRenderer.flipX = _frameVelocity.x < 0;
         }
+        
+        _animator.SetFloat("speed", Mathf.Abs(_frameVelocity.x));
     }
 
     #endregion
@@ -194,6 +200,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
             _frameVelocity.y =
                 Mathf.MoveTowards(_frameVelocity.y, -stats.MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
         }
+        
     }
 
     #endregion
