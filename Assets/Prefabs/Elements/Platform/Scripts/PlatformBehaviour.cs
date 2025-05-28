@@ -24,7 +24,6 @@ public class PlatformBehaviour : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log(other.gameObject.tag);
         if (!_isFalling && other.gameObject.CompareTag("Player") && type == EPlatformType.Falling)
         {
             StartCoroutine(HandlePlatformFalling());
@@ -36,7 +35,7 @@ public class PlatformBehaviour : MonoBehaviour
         _isFalling = true;
         
         var initialPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-
+        
         var initialTarget = new Vector3(transform.position.x, transform.position.y - 5, transform.position.z);
         
         transform.position = Vector3.MoveTowards(transform.position, initialTarget, 5 * Time.deltaTime);
@@ -47,15 +46,28 @@ public class PlatformBehaviour : MonoBehaviour
         rigidBody.gravityScale = 10f;
         rigidBody.bodyType = RigidbodyType2D.Dynamic;
         
-        
-        // TODO: revisar
+        StartCoroutine(HandlePlatformRespawn(rigidBody, initialPosition));
+    }
+
+    IEnumerator HandlePlatformRespawn(Rigidbody2D rigidBody, Vector3 initialPosition)
+    {
         yield return new WaitForSeconds(respawningCooldown);
         
         rigidBody.gravityScale = 0f;
         rigidBody.bodyType = RigidbodyType2D.Kinematic;
-        transform.position = Vector3.MoveTowards(transform.position, initialPosition, 5 * Time.deltaTime);
         
+        while (Vector3.Distance(transform.position, initialPosition) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                initialPosition,
+                10f * Time.deltaTime
+            );
+            yield return null;
+        }
 
+        transform.position = initialPosition;
+        
         _isFalling = false;
     }
 
