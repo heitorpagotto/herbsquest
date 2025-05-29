@@ -59,8 +59,11 @@ public class PlayerInventory : MonoBehaviour
             other.GetComponent<CoinBehaviour>().Collect();
             Coins++;
 
-            if (Coins > 99)
+            if (Coins > 50)
+            {
                 Coins = 0;
+                Heal();
+            }
         }
 
         if (other.CompareTag(ECollectibles.HeartUpgrade.ToString()))
@@ -77,6 +80,14 @@ public class PlayerInventory : MonoBehaviour
         //     if (CurrentHealth > MaxHealth)
         //         CurrentHealth = MaxHealth;
         // }
+    }
+
+    private void Heal()
+    {
+        CurrentHealth++;
+
+        if (CurrentHealth > MaxHealth)
+            CurrentHealth = MaxHealth;
     }
 
     private void TakeDamage()
