@@ -1,5 +1,6 @@
 using System;
 using Enums;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -61,12 +62,41 @@ public class PlayerInventory : MonoBehaviour
             if (Coins > 99)
                 Coins = 0;
         }
+
+        if (other.CompareTag(ECollectibles.HeartUpgrade.ToString()))
+        {
+            other.GetComponent<HeartUpgradeBehaviour>().Collect();
+            MaxHealth++;
+            CurrentHealth = MaxHealth;
+        }
+        
+        // if (other.CompareTag(ECollectibles.Heart.ToString()))
+        // {
+        //     CurrentHealth++;
+        //
+        //     if (CurrentHealth > MaxHealth)
+        //         CurrentHealth = MaxHealth;
+        // }
+    }
+
+    private void TakeDamage()
+    {
+        CurrentHealth--;
+
+        if (CurrentHealth == 0)
+        {
+            // Die();
+        }
     }
     
     // This fires when you tweak the serialized fields in the Inspector at runtime:
     private void OnValidate()
     {
         OnCoinChange?.Invoke();
+        
+        if (!Application.isPlaying)
+            return;
+        
         OnMaxHealthChange?.Invoke();
         OnCurrentHealthChange?.Invoke();
     }

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Coin
   - Enemy
+  - HeartUpgrade
+  - Pipe
   layers:
   - Default
   - TransparentFX
@@ -40,6 +42,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Particle
+    uniqueID: 4201783313
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

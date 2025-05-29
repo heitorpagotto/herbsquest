@@ -55,7 +55,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
             JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C),
-            Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"))
+            Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")),
+            Crouch = Input.GetAxisRaw("Vertical") < 0
         };
 
         if (stats.SnapInput)
@@ -85,6 +86,22 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
         ApplyMovement();
     }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (!_frameInput.Crouch) return;
+        
+        foreach (var contact in other.contacts)
+        {
+            var obj = contact.collider.gameObject;
+
+            if (!obj.CompareTag("Pipe")) continue;
+            
+            var pipe = obj.GetComponent<PipeBehaviour>();
+            pipe.Teleport(gameObject);
+        }
+    }
+    
 
     #region Collisions
 
@@ -221,6 +238,7 @@ public struct FrameInput
     public bool JumpDown;
     public bool JumpHeld;
     public Vector2 Move;
+    public bool Crouch;
 }
 
 public interface IPlayerController
