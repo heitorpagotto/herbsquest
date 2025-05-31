@@ -168,13 +168,18 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _jumpToConsume = false;
     }
 
-    private void ExecuteJump()
+    public void Bounce(float jumpPower)
+    {
+        ExecuteJump(jumpPower);
+    }
+
+    private void ExecuteJump(float? jumpPower = null)
     {
         _endedJumpEarly = false;
         _timeJumpWasPressed = 0;
         _bufferedJumpUsable = false;
         _coyoteUsable = false;
-        _frameVelocity.y = stats.JumpPower;
+        _frameVelocity.y = jumpPower ?? stats.JumpPower;
         Jumped?.Invoke();
     }
 

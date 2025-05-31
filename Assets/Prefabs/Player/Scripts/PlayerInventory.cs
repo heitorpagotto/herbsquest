@@ -90,7 +90,7 @@ public class PlayerInventory : MonoBehaviour
             CurrentHealth = MaxHealth;
     }
 
-    private void TakeDamage()
+    public void TakeDamage()
     {
         CurrentHealth--;
 
