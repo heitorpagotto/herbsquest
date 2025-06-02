@@ -46,7 +46,10 @@ public abstract class EnemyBehaviour : MonoBehaviour
 
     void Patrol()
     {
-        _rigidbody.linearVelocity = new Vector2((_facingRight ? 1 : -1) * speed, _rigidbody.linearVelocity.y);
+        float direction = _facingRight ? 1 : -1;
+        Vector2 movement = new Vector2(direction * speed * Time.fixedDeltaTime, 0f);
+        
+        _rigidbody.MovePosition(_rigidbody.position + movement);
         
         bool hitWall= Physics2D.OverlapCircle(wallCheck.position, checkRadius, levelLayer);
 
@@ -72,8 +75,6 @@ public abstract class EnemyBehaviour : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        //Debug.Log(other.gameObject.layer);
-        
         if (!other.gameObject.CompareTag("Player")) return;
 
         var contactPoint = other.GetContact(0);

@@ -36,11 +36,10 @@ public static class GameSave
 
     public static void DeleteSave()
     {
-        // var fileLocation = GetSaveDataLocation();
-        //
-        // var fileStream = new FileStream(fileLocation, FileMode.Open);
-        //
-        // fileStream.d
+         var fileLocation = GetSaveDataLocation();
+
+         if (HasSaveData())
+             File.Delete(fileLocation);
     }
     
     public static bool HasSaveData() => File.Exists(GetSaveDataLocation());
