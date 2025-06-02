@@ -7,6 +7,7 @@ public class UIBehaviour : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private PlayerInventory inventoryScript;
     [SerializeField] private Sprite[] healthSprites;
+    [SerializeField] private EndLevelBehaviour endLevelBehaviour;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,6 +22,7 @@ public class UIBehaviour : MonoBehaviour
         inventoryScript.OnCoinChange += UpdateCoinUI;
         inventoryScript.OnMaxHealthChange += UpdateEmptyHealth;
         inventoryScript.OnCurrentHealthChange += UpdateFilledHealth;
+        endLevelBehaviour.OnLevelEnd += EndLevel;
     }
 
     private void OnDisable()
@@ -28,6 +30,7 @@ public class UIBehaviour : MonoBehaviour
         inventoryScript.OnCoinChange -= UpdateCoinUI;
         inventoryScript.OnMaxHealthChange -= UpdateEmptyHealth;
         inventoryScript.OnCurrentHealthChange -= UpdateFilledHealth;
+        endLevelBehaviour.OnLevelEnd -= EndLevel;
     }
 
     void UpdateCoinUI()
@@ -93,5 +96,12 @@ public class UIBehaviour : MonoBehaviour
             img.sprite = healthSprites[1];
             img.preserveAspect = true;
         }
+    }
+
+    void EndLevel()
+    {
+        var endLevelObj = gameObject.transform.GetChild(2).gameObject;
+        
+        endLevelObj.SetActive(true);
     }
 }
