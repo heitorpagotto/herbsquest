@@ -12,9 +12,6 @@ public class FlowerBehaviour : EnemyBehaviour
 
         controller.Bounce(25f);
 
-        // var rigidBody = gameObject.GetComponent<Rigidbody2D>();
-        // rigidBody.linearVelocity = Vector2.zero;
-
         var shouldDie = _hits >= hitsToKill;
         StartCoroutine(PlayParticle(shouldDie ? 3 : 2, shouldDie));
     }
@@ -25,11 +22,11 @@ public class FlowerBehaviour : EnemyBehaviour
         {
             var sprite = gameObject.GetComponent<SpriteRenderer>();
             sprite.enabled = false;
-            AudioManager.Instance.PlaySfx("EnemyDead");
+            AudioManager.Instance?.PlaySfx("EnemyDead");
         }
         
         if (!dead)
-            AudioManager.Instance.PlaySfx("EnemyHit");
+            AudioManager.Instance?.PlaySfx("EnemyHit");
         
         var particle = gameObject.transform.GetChild(position).GetComponent<ParticleSystem>();
         

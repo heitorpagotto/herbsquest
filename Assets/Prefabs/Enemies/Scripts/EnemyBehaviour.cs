@@ -47,9 +47,8 @@ public abstract class EnemyBehaviour : MonoBehaviour
     void Patrol()
     {
         float direction = _facingRight ? 1 : -1;
-        Vector2 movement = new Vector2(direction * speed * Time.fixedDeltaTime, 0f);
         
-        _rigidbody.MovePosition(_rigidbody.position + movement);
+        _rigidbody.linearVelocity = new Vector2(direction * speed, _rigidbody.linearVelocity.y);
         
         bool hitWall= Physics2D.OverlapCircle(wallCheck.position, checkRadius, levelLayer);
 

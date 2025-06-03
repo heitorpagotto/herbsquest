@@ -7,15 +7,13 @@ public class PipeBehaviour : MonoBehaviour
     [SerializeField]
     [CanBeNull]
     private PipeBehaviour destination;
-
-    
     
     public void Teleport(GameObject player)
     {
-        AudioManager.Instance.PlaySfx("PipeEnter");
-        
         if (destination == null) return;
         
+        AudioManager.Instance?.PlaySfx("PipeEnter");
+
         var playerController = player.GetComponent<PlayerController>();
         var capsuleCollider = player.GetComponent<CapsuleCollider2D>();
         var rigidBody2D = player.GetComponent<Rigidbody2D>();

@@ -6,28 +6,25 @@ public class GoombaBehaviour : EnemyBehaviour
     protected override void OnEnemyHit(PlayerController controller)
     {
         controller.Bounce(25f);
-
-        StartCoroutine(PlayParticle(2, false));
+        StartCoroutine(PlayParticle());
     }
 
-    IEnumerator PlayParticle(int position, bool dead = false)
+    IEnumerator PlayParticle()
     {
-        if (dead)
-        {
-            var sprite = gameObject.GetComponent<SpriteRenderer>();
-            sprite.enabled = false;
-            AudioManager.Instance.PlaySfx("EnemyDead");
-        }
+        var hitParticle = gameObject.transform.GetChild(2).GetComponent<ParticleSystem>();
+        hitParticle.Play();
         
-        var particle = gameObject.transform.GetChild(position).GetComponent<ParticleSystem>();
+        var sprite = gameObject.GetComponent<SpriteRenderer>();
+        sprite.enabled = false;
         
-        particle.Play();
+        var smokeParticle = gameObject.transform.GetChild(3).GetComponent<ParticleSystem>();
         
-        yield return new WaitUntil(() => !particle.IsAlive(true));
+        AudioManager.Instance?.PlaySfx("EnemyDead");
         
-        if (dead)
-            Destroy(gameObject);
-        else
-            StartCoroutine(PlayParticle(3, true));
+        smokeParticle.Play();
+        
+        yield return new WaitUntil(() => !smokeParticle.IsAlive(true));
+        
+        Destroy(gameObject);
     }
 }

@@ -170,10 +170,10 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     public void Bounce(float jumpPower)
     {
-        ExecuteJump(jumpPower);
+        ExecuteJump(false, jumpPower);
     }
 
-    private void ExecuteJump(float? jumpPower = null)
+    private void ExecuteJump(bool playSfx = true, float? jumpPower = null)
     {
         _endedJumpEarly = false;
         _timeJumpWasPressed = 0;
@@ -182,7 +182,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _frameVelocity.y = jumpPower ?? stats.JumpPower;
         Jumped?.Invoke();
         
-        AudioManager.Instance?.PlaySfx("PlayerJump");
+        if (playSfx)
+            AudioManager.Instance?.PlaySfx("PlayerJump");
     }
 
     #endregion
