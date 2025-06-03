@@ -16,6 +16,7 @@ public class MapBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        AudioManager.Instance.PlayMusic("MapTheme", 0f);
         _data = GetGameData();
         _currentSelectedLevel = _data.LastLevel;
         DrawLevels();
@@ -114,16 +115,18 @@ public class MapBehaviour : MonoBehaviour
 
     int SetLevelSprite(LevelNode level)
     {
+        var spriteIndex = 0;
+        
         if (level.IsUnlocked)
-            return 1;
+            spriteIndex = 1;
 
         if (level.IsBeaten)
-            return 2;
+            spriteIndex = 2;
 
         if (level.IsCompleted)
-            return 3;
+            spriteIndex = 3;
 
-        return 0;
+        return spriteIndex;
     }
 
     // Update is called once per frame
@@ -139,8 +142,13 @@ public class MapBehaviour : MonoBehaviour
     {
         var level = levels.FirstOrDefault(x => x.Number == _currentSelectedLevel);
         
+        AudioManager.Instance.PlaySfx("LevelEnter");
+
         if (level is { IsUnlocked: true })
+        {
+            AudioManager.Instance.musicSource.Stop();
             SceneManager.LoadScene(level.SceneName, LoadSceneMode.Single);
+        }
     }
 }
 

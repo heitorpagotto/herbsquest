@@ -13,6 +13,7 @@ public class CoinBehaviour : MonoBehaviour
         particle.Play();
         
         // handle sound
+        AudioManager.Instance.PlaySfx("CoinCollect");
 
         StartCoroutine(ParticlesAlive(particle));
     }

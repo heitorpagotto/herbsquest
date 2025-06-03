@@ -14,6 +14,8 @@ public class HeartUpgradeBehaviour : MonoBehaviour
     public void Collect()
     {
         _heartSpriteObject.gameObject.SetActive(false);
+        
+        AudioManager.Instance.PlaySfx("HeartUpgradeCollect");
 
         var particle = gameObject.transform.GetChild(1).GetComponent<ParticleSystem>();
         

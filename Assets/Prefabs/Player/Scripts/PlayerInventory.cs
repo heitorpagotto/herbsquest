@@ -94,6 +94,8 @@ public class PlayerInventory : MonoBehaviour
     {
         CurrentHealth--;
 
+        AudioManager.Instance.PlaySfx("PlayerHurt");
+        
         if (CurrentHealth == 0)
         {
             // Die();

@@ -181,6 +181,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _coyoteUsable = false;
         _frameVelocity.y = jumpPower ?? stats.JumpPower;
         Jumped?.Invoke();
+        
+        AudioManager.Instance?.PlaySfx("PlayerJump");
     }
 
     #endregion

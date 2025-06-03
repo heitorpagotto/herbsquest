@@ -13,6 +13,9 @@ public class EndLevelBehaviour : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            AudioManager.Instance.PlaySfx("LevelGoal");
+            AudioManager.Instance.musicSource.Stop();
+            
             var controller = other.GetComponent<PlayerController>();
             controller.enabled = false;
             
@@ -42,8 +45,8 @@ public class EndLevelBehaviour : MonoBehaviour
         }
         else
         {
-            data.CompletedLevels = new int[] { 1 };
-            data.LastLevel = 1;
+            data.FinshedLevels = new int[] { 1 };
+            data.LastLevel = currentLevel;
             data.UnlockedLevels = new int[] { 1, 2 };
             data.PlayerMaxHealth = maxHealth;
         }
@@ -53,9 +56,9 @@ public class EndLevelBehaviour : MonoBehaviour
 
     IEnumerator PlaySoundAndLoadMap()
     {
-        // play sound
+        AudioManager.Instance.PlaySfx("LevelClear");
         
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(4);
 
         SceneManager.LoadScene("Map", LoadSceneMode.Single);
     }

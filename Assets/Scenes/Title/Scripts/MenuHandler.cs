@@ -21,22 +21,43 @@ public class MenuHandler : MonoBehaviour
     
     [SerializeField]
     private Button deleteSaveDataButton;
+    
+    [SerializeField]
+    private Slider musicSlider;
+    [SerializeField]
+    private Slider sfxSlider;
 
     void Start()
     {
-        OpenMainMenu();
+        OpenMainMenu(false);
+        
+        AudioManager.Instance.PlayMusic("MainTheme", 30f);
     }
 
     public void OpenSettingsMenu()
     {
+        AudioManager.Instance.PlaySfx("Selection");
         mainMenuCanvas.SetActive(false);
         optionsMenuCanvas.SetActive(true);
         
         EventSystem.current.SetSelectedGameObject(optionsMenuFirstOption);
     }
 
-    public void OpenMainMenu()
+    public void ChangeMusicValue()
     {
+        AudioManager.Instance.ChangeMusicVolume(musicSlider.value);
+    }
+    
+    public void ChangeSfxValue()
+    {
+        AudioManager.Instance.ChangeSfxVolume(sfxSlider.value);
+    }
+
+    public void OpenMainMenu(bool playSfx = true)
+    {
+        if (playSfx)
+            AudioManager.Instance.PlaySfx("Selection");
+        
         deleteSaveDataButton.interactable = GameSave.HasSaveData();
 
         mainMenuCanvas.SetActive(true);
@@ -47,6 +68,7 @@ public class MenuHandler : MonoBehaviour
 
     public void DeleteSavedGame()
     {
+        AudioManager.Instance.PlaySfx("Selection");
         GameSave.DeleteSave();
         deleteSaveDataButton.interactable = false;
         EventSystem.current.SetSelectedGameObject(mainMenuFirstOption);
@@ -54,11 +76,14 @@ public class MenuHandler : MonoBehaviour
 
     public void StartGame()
     {
+        AudioManager.Instance.PlaySfx("Selection");
+        AudioManager.Instance.musicSource.Stop();
         SceneManager.LoadScene("Map", LoadSceneMode.Single);
     }
 
     public void QuitGame()
     {
+        AudioManager.Instance.PlaySfx("Selection");
         Application.Quit();
     }
 }

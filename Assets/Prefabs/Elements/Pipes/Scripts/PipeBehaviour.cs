@@ -12,6 +12,8 @@ public class PipeBehaviour : MonoBehaviour
     
     public void Teleport(GameObject player)
     {
+        AudioManager.Instance.PlaySfx("PipeEnter");
+        
         if (destination == null) return;
         
         var playerController = player.GetComponent<PlayerController>();
@@ -68,6 +70,7 @@ public class PipeBehaviour : MonoBehaviour
         rigidBody.gravityScale = 1;
         pipeCollider.enabled = true;
         pipeCollider.excludeLayers = 0;
+        
         //rigidBody.bodyType = RigidbodyType2D.Dynamic;
     }
 }

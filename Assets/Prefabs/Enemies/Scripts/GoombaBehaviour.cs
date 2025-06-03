@@ -16,6 +16,7 @@ public class GoombaBehaviour : EnemyBehaviour
         {
             var sprite = gameObject.GetComponent<SpriteRenderer>();
             sprite.enabled = false;
+            AudioManager.Instance.PlaySfx("EnemyDead");
         }
         
         var particle = gameObject.transform.GetChild(position).GetComponent<ParticleSystem>();

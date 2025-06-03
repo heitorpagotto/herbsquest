@@ -25,7 +25,11 @@ public class FlowerBehaviour : EnemyBehaviour
         {
             var sprite = gameObject.GetComponent<SpriteRenderer>();
             sprite.enabled = false;
+            AudioManager.Instance.PlaySfx("EnemyDead");
         }
+        
+        if (!dead)
+            AudioManager.Instance.PlaySfx("EnemyHit");
         
         var particle = gameObject.transform.GetChild(position).GetComponent<ParticleSystem>();
         
