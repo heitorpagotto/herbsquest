@@ -179,8 +179,8 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: 5303a05a88c3d414c8a135b833328080, type: 3}
   - {fileID: 3067402960717136791, guid: 22a52000bf418984aa5066ac51dc6d74, type: 3}
-  fallingCooldown: 0
-  respawningCooldown: 0
+  fallingCooldown: 1
+  respawningCooldown: 5
   type: 0
 --- !u!251 &8582662973368352322
 PlatformEffector2D:

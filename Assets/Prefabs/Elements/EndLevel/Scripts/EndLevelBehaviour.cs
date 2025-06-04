@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -37,17 +38,17 @@ public class EndLevelBehaviour : MonoBehaviour
         {
             data = new GameProgress()
             {
-                CompletedLevels = new int[] { 1 },
-                LastLevel = 1,
-                UnlockedLevels = new int[] { 1, 2 },
+                FinshedLevels = new int[] { currentLevel },
+                LastLevel = currentLevel,
+                UnlockedLevels = new int[] { currentLevel, currentLevel + 1 },
                 PlayerMaxHealth = maxHealth,
             };
         }
         else
         {
-            data.FinshedLevels = new int[] { 1 };
+            data.FinshedLevels = data.FinshedLevels?.Concat(new int[] { currentLevel }).ToArray() ?? new int[] { currentLevel };
             data.LastLevel = currentLevel;
-            data.UnlockedLevels = new int[] { 1, 2 };
+            data.UnlockedLevels = data.UnlockedLevels?.Concat(new int[] { currentLevel + 1 }).ToArray() ?? new int[] { currentLevel + 1 };
             data.PlayerMaxHealth = maxHealth;
         }
         
