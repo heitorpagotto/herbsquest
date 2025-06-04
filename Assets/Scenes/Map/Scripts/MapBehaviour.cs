@@ -16,7 +16,7 @@ public class MapBehaviour : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AudioManager.Instance.PlayMusic("MapTheme", 0f);
+        AudioManager.Instance?.PlayMusic("MapTheme", 0f);
         _data = GetGameData();
         _currentSelectedLevel = _data.LastLevel;
         DrawLevels();

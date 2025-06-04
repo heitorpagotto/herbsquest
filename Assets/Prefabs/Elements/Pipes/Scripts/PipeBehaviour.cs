@@ -63,6 +63,10 @@ public class PipeBehaviour : MonoBehaviour
         var startPos = playerT.position;
         startPos.x = entryCenterX;
         playerT.position = startPos;
+        
+        // (Optional) play SFX/Pause briefly
+        AudioManager.Instance?.PlaySfx("PipeEnter");
+        yield return new WaitForSeconds(0.3f);
 
         // Now smoothly move Y from current Y down to entryTargetY
         while (playerT.position.y > entryTargetY)
@@ -70,10 +74,6 @@ public class PipeBehaviour : MonoBehaviour
             playerT.position += Vector3.down * pipeSpeed * Time.deltaTime;
             yield return null;
         }
-
-        // (Optional) play SFX/Pause briefly
-        AudioManager.Instance?.PlaySfx("PipeEnter");
-        yield return new WaitForSeconds(0.3f);
 
         // ** STEP B: Teleport to destination pipe’s “inside bottom” position **
         var exitPipeCollider = destination.GetComponent<BoxCollider2D>();

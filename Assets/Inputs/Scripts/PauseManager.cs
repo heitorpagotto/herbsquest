@@ -1,10 +1,14 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PauseManager : MonoBehaviour
 {
     public static PauseManager Instance;
     
-    public bool MenuOpenCloseInput { get; private set; }
+    public bool PauseOpenClose { get; private set; }
+
+    private PlayerInput _playerInput;
+    private InputAction _pauseOpenCloseAction;
 
     void Awake()
     {
@@ -12,11 +16,13 @@ public class PauseManager : MonoBehaviour
         {
             Instance = this;
         }
+        
+        _playerInput = GetComponent<PlayerInput>();
+        _pauseOpenCloseAction = _playerInput.actions["PauseOpenClose"];
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        PauseOpenClose = _pauseOpenCloseAction.WasPressedThisFrame();
     }
 }

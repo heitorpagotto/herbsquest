@@ -62,6 +62,7 @@ public class PlayerInventory : MonoBehaviour
         if (progress != null)
         {
             MaxHealth = progress.PlayerMaxHealth;
+            CurrentHealth = MaxHealth;
         }
     }
    

@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIBehaviour : MonoBehaviour
@@ -8,6 +10,19 @@ public class UIBehaviour : MonoBehaviour
     [SerializeField] private PlayerInventory inventoryScript;
     [SerializeField] private Sprite[] healthSprites;
     [SerializeField] private EndLevelBehaviour endLevelBehaviour;
+
+    [Header("Pause Screen")] [SerializeField]
+    private GameObject pauseParent;
+    [SerializeField]
+    private GameObject pauseScreen;
+    [SerializeField]
+    private GameObject pauseOptionsScreen;
+    [SerializeField]
+    private GameObject pauseFirstOption;
+    [SerializeField]
+    private GameObject pauseOptionsFirstOption;
+
+    private bool _isPaused;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -15,6 +30,63 @@ public class UIBehaviour : MonoBehaviour
         UpdateCoinUI();
         UpdateEmptyHealth();
         UpdateFilledHealth();
+    }
+
+    void Update()
+    {
+        if (PauseManager.Instance.PauseOpenClose)
+        {
+            if (!_isPaused)
+            {
+                AudioManager.Instance?.musicSource.Pause();
+                AudioManager.Instance?.PlaySfx("Pause");
+                Pause();
+            }
+            else
+            {
+                Unpause();
+            }
+        }
+    }
+
+    void Pause()
+    {
+        _isPaused = true;
+        pauseParent.SetActive(true);
+        OpenPauseMenu();
+        Time.timeScale = 0f;
+    }
+
+    public void Unpause()
+    {
+        _isPaused = false;
+        pauseParent.SetActive(false);
+        pauseScreen.SetActive(false);
+        pauseOptionsScreen.SetActive(false);
+        Time.timeScale = 1f;
+        AudioManager.Instance?.musicSource.UnPause();
+        EventSystem.current.SetSelectedGameObject(null);
+    }
+
+    public void OpenPauseMenu()
+    {
+        pauseScreen.SetActive(true);
+        pauseOptionsScreen.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(pauseFirstOption);
+
+    }
+
+    public void OpenSettings()
+    {
+        pauseScreen.SetActive(false);
+        pauseOptionsScreen.SetActive(true);
+        
+        EventSystem.current.SetSelectedGameObject(pauseOptionsFirstOption);
+    }
+
+    public void ExitLevel()
+    {
+        SceneManager.LoadScene("Map", LoadSceneMode.Single);
     }
 
     private void OnEnable()
