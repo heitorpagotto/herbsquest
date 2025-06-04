@@ -164,6 +164,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: f051b716b4d9b314fbbdad5052d7d342, type: 2}
+  hurtDuration: 0.5
+  invincibleDuration: 1
+  knockbackHorizontalForce: 5
+  knockbackVerticalForce: 3
 --- !u!70 &915234420395656545
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -213,9 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faff6c8700c49e84584ffb48e5352fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 2
-  CurrentHealth: 2
-  Coins: 0
+  maxHealth: 2
+  currentHealth: 2
+  coins: 0
 --- !u!95 &274800318190654453
 Animator:
   serializedVersion: 7

@@ -80,15 +80,13 @@ public abstract class EnemyBehaviour : MonoBehaviour
         var playerHealth = other.gameObject.GetComponent<PlayerInventory>();
         var playerController = other.gameObject.GetComponent<PlayerController>();
 
-        Debug.Log(contactPoint.normal);
-        
         if (contactPoint.normal.y < -0.5f)
         {
              OnEnemyHit(playerController);
         }
         else
         {
-            playerHealth.TakeDamage();
+            playerHealth.TakeDamage(transform.position);
         }
     }
     

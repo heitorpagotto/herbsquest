@@ -22,6 +22,7 @@ public class UIBehaviour : MonoBehaviour
         inventoryScript.OnCoinChange += UpdateCoinUI;
         inventoryScript.OnMaxHealthChange += UpdateEmptyHealth;
         inventoryScript.OnCurrentHealthChange += UpdateFilledHealth;
+        inventoryScript.OnPlayerDeath += PlayerDead;
         endLevelBehaviour.OnLevelEnd += EndLevel;
     }
 
@@ -30,6 +31,7 @@ public class UIBehaviour : MonoBehaviour
         inventoryScript.OnCoinChange -= UpdateCoinUI;
         inventoryScript.OnMaxHealthChange -= UpdateEmptyHealth;
         inventoryScript.OnCurrentHealthChange -= UpdateFilledHealth;
+        inventoryScript.OnPlayerDeath -= PlayerDead;
         endLevelBehaviour.OnLevelEnd -= EndLevel;
     }
 
@@ -103,5 +105,12 @@ public class UIBehaviour : MonoBehaviour
         var endLevelObj = gameObject.transform.GetChild(2).gameObject;
         
         endLevelObj.SetActive(true);
+    }
+
+    void PlayerDead()
+    {
+        var gameoverObj = gameObject.transform.GetChild(3).gameObject;
+        
+        gameoverObj.SetActive(true);
     }
 }

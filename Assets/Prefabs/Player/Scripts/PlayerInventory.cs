@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using Enums;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class PlayerInventory : MonoBehaviour
@@ -18,6 +20,7 @@ public class PlayerInventory : MonoBehaviour
     public event Action OnCoinChange;
     public event Action OnMaxHealthChange;
     public event Action OnCurrentHealthChange;
+    public event Action OnPlayerDeath;
 
     public int Coins
     {
@@ -49,6 +52,16 @@ public class PlayerInventory : MonoBehaviour
             if (currentHealth == value) return;
             currentHealth = value;
             OnCurrentHealthChange?.Invoke();
+        }
+    }
+
+    void Awake()
+    {
+        var progress = GameSave.LoadGame();
+
+        if (progress != null)
+        {
+            MaxHealth = progress.PlayerMaxHealth;
         }
     }
    
@@ -84,22 +97,57 @@ public class PlayerInventory : MonoBehaviour
 
     private void Heal()
     {
-        CurrentHealth++;
-
-        if (CurrentHealth > MaxHealth)
-            CurrentHealth = MaxHealth;
+        if (CurrentHealth < MaxHealth)
+            CurrentHealth++;
     }
 
-    public void TakeDamage()
+    public void TakeDamage(Vector2 enemyPosition)
     {
-        CurrentHealth--;
+        var controller = gameObject.GetComponent<PlayerController>();
 
-        AudioManager.Instance.PlaySfx("PlayerHurt");
+        if (controller.IsInvincible) return;
         
-        if (CurrentHealth == 0)
+        CurrentHealth--;
+        
+        controller.GetHurt(enemyPosition);
+
+        if (CurrentHealth <= 0)
         {
-            // Die();
+            Die();
         }
+    }
+
+    public void Die()
+    {
+        AudioManager.Instance?.musicSource.Stop();
+        AudioManager.Instance?.PlayMusic("Dead", 0f, false);
+        
+        OnPlayerDeath?.Invoke();
+
+        StartCoroutine(HandleSceneReload());
+    }
+
+    IEnumerator HandleSceneReload()
+    {
+        
+        var audioManager = AudioManager.Instance;
+        
+        if (audioManager != null)
+        {
+            yield return new WaitWhile(() => audioManager.musicSource.isPlaying);
+        }
+        else
+        {
+            yield return new WaitForSeconds(1f);
+        }
+        
+        gameObject.SetActive(false);
+
+        var sceneName = SceneManager.GetActiveScene().name;
+        
+        Debug.Log(sceneName);
+        
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
     
     // This fires when you tweak the serialized fields in the Inspector at runtime:

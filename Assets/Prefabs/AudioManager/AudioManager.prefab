@@ -188,6 +188,8 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: a7364c8288bb97b46b7792f972723fdc, type: 3}
   - Name: Intro
     Clip: {fileID: 8300000, guid: 7a7b3d92978050f4ba991f98b4ffb536, type: 3}
+  - Name: Dead
+    Clip: {fileID: 8300000, guid: e3a577dd19299084a824673895688762, type: 3}
   sfxSounds:
   - Name: PlayerJump
     Clip: {fileID: 8300000, guid: 67e1912e140fb8249986e5b2df0c8072, type: 3}
@@ -211,6 +213,8 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: 874a7ff33e2f5d34093aa10cd5dcc3cc, type: 3}
   - Name: Pause
     Clip: {fileID: 8300000, guid: a94afcb6db05bf04eb4e8ca5a852e120, type: 3}
+  - Name: Selection
+    Clip: {fileID: 8300000, guid: ad08e1a362c8e98429e348898e62d3a7, type: 3}
   - Name: Selection
     Clip: {fileID: 8300000, guid: ad08e1a362c8e98429e348898e62d3a7, type: 3}
   musicSource: {fileID: 7032937730232421892}

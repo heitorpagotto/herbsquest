@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource musicSource, sfxSource;
 
     private float _loopStart = 0f;
+    private bool _shouldLoop;
 
     void Awake()
     {
@@ -26,20 +27,21 @@ public class AudioManager : MonoBehaviour
 
     void Update()
     {
-        if (musicSource.isPlaying && musicSource.time >= (musicSource.clip.length - 1f))
+        if (_shouldLoop && musicSource.isPlaying && musicSource.time >= (musicSource.clip.length - 1f))
         {
             musicSource.time = _loopStart;
             musicSource.Play();
         }
     }
 
-    public void PlayMusic(string songName, float loopStart)
+    public void PlayMusic(string songName, float loopStart, bool shouldLoop = true)
     {
         var music = musicSounds.FirstOrDefault(x => x.Name == songName);
 
         if (music == null) return;
 
         _loopStart = loopStart;
+        _shouldLoop = shouldLoop;
         musicSource.clip = music.Clip;
         musicSource.Play();
     }

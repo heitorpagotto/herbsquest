@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -32,6 +33,17 @@ public class PlayerController : MonoBehaviour, IPlayerController
     #endregion
 
     private float _time;
+    
+    private bool _isHurt = false;
+    private bool _isInvincible = false;
+    [SerializeField] private float hurtDuration = 1f;
+    [SerializeField] private float invincibleDuration = 0.5f;
+    [SerializeField] private float knockbackHorizontalForce = 10f;
+    [SerializeField] private float knockbackVerticalForce = 5f;
+
+// ── Expose for other scripts:
+    public bool IsInvincible => _isInvincible;
+    public bool IsGrounded => _isHurt;
 
     private void Awake()
     {
@@ -51,6 +63,17 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     private void GatherInput()
     {
+        if (_isHurt)
+        {
+            _frameInput = new FrameInput {
+                JumpDown = false,
+                JumpHeld = false,
+                Move = Vector2.zero,
+                Crouch = false
+            };
+            return;
+        }
+        
         _frameInput = new FrameInput
         {
             JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
@@ -79,6 +102,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private void FixedUpdate()
     {
         CheckCollisions();
+
+        if (_isHurt) return;
 
         HandleJump();
         HandleDirection();
@@ -138,8 +163,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
             GroundedChanged?.Invoke(false, 0);
         }
         
-        _animator.SetBool("jumping", !_grounded);
-
         Physics2D.queriesStartInColliders = _cachedQueryStartInColliders;
     }
 
@@ -217,20 +240,75 @@ public class PlayerController : MonoBehaviour, IPlayerController
         if (_grounded && _frameVelocity.y <= 0f)
         {
             _frameVelocity.y = stats.GroundingForce;
+            _animator.SetBool("jumping", false);
+            _animator.SetBool("falling", false);
         }
         else
         {
             var inAirGravity = stats.FallAcceleration;
-            if (_endedJumpEarly && _frameVelocity.y > 0) inAirGravity *= stats.JumpEndEarlyGravityModifier;
+            _animator.SetBool("jumping", true);
+            if (_endedJumpEarly && _frameVelocity.y > 0)
+            {
+                inAirGravity *= stats.JumpEndEarlyGravityModifier;
+                _animator.SetBool("falling", true);
+                _animator.SetBool("jumping", false);
+            }
             _frameVelocity.y =
                 Mathf.MoveTowards(_frameVelocity.y, -stats.MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
         }
-        
     }
 
     #endregion
 
     private void ApplyMovement() => _rb.linearVelocity = _frameVelocity;
+    
+    public void GetHurt(Vector2 enemyPosition)
+    {
+        if (_isInvincible || _isHurt) return;
+        StartCoroutine(HurtCoroutine(enemyPosition));
+    }
+
+    private IEnumerator HurtCoroutine(Vector2 enemyPosition)
+    {
+        // 1) trigger hurt animation + sound
+        _animator.SetTrigger("hurt");
+        AudioManager.Instance?.PlaySfx("PlayerHurt");
+
+        // 2) freeze frame for 0.05 real seconds
+        float prevTimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.05f);
+        Time.timeScale = prevTimeScale;
+
+        _isInvincible = true;
+        
+        // 3) knockback if grounded
+        if (_grounded)
+        {
+            Vector2 dir = ((Vector2)transform.position - enemyPosition).normalized;
+            _rb.linearVelocity = new Vector2(
+                dir.x * knockbackHorizontalForce,
+                knockbackVerticalForce
+            );
+            _isHurt = true;
+
+            // hold “lost control” for exactly hurtDuration
+            yield return new WaitForSeconds(hurtDuration);
+            _isHurt = false;
+        }
+        else
+        {
+            // In air: skip knockback & skip control loss, 
+            // but we still did the freeze + hurt animation above.
+            _isHurt = false;
+        }
+
+        // 4) short invincibility
+        yield return new WaitForSeconds(invincibleDuration);
+        _isInvincible = false;
+    }
+    
+    
 
 #if UNITY_EDITOR
     private void OnValidate()

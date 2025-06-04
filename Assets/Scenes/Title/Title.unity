@@ -3253,6 +3253,18 @@ PrefabInstance:
       propertyPath: musicSource
       value: 
       objectReference: {fileID: 1833201192}
+    - target: {fileID: 925608940230735855, guid: c2dd8a66fdb870e4aa63ee6266cebb2f, type: 3}
+      propertyPath: sfxSounds.Array.size
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 925608940230735855, guid: c2dd8a66fdb870e4aa63ee6266cebb2f, type: 3}
+      propertyPath: sfxSounds.Array.data[12].Clip
+      value: 
+      objectReference: {fileID: 8300000, guid: e3a577dd19299084a824673895688762, type: 3}
+    - target: {fileID: 925608940230735855, guid: c2dd8a66fdb870e4aa63ee6266cebb2f, type: 3}
+      propertyPath: sfxSounds.Array.data[12].Name
+      value: Dead
+      objectReference: {fileID: 0}
     - target: {fileID: 3326122092264967668, guid: c2dd8a66fdb870e4aa63ee6266cebb2f, type: 3}
       propertyPath: m_Name
       value: AudioManager
