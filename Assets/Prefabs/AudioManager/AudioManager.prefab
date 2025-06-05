@@ -219,6 +219,8 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: ad08e1a362c8e98429e348898e62d3a7, type: 3}
   - Name: Selection
     Clip: {fileID: 8300000, guid: ad08e1a362c8e98429e348898e62d3a7, type: 3}
+  - Name: Selection
+    Clip: {fileID: 8300000, guid: ad08e1a362c8e98429e348898e62d3a7, type: 3}
   musicSource: {fileID: 7032937730232421892}
   sfxSource: {fileID: 3658793690876443705}
 --- !u!1 &6302815715745442084

@@ -20,6 +20,8 @@ public class MapUI : MonoBehaviour
     private Slider musicSlider;
     [SerializeField]
     private Slider sfxSlider;
+
+    [SerializeField] private GameObject map;
     
     private bool _isPaused;
 
@@ -48,6 +50,8 @@ public class MapUI : MonoBehaviour
     
     void Pause()
     {
+        var mapBehaviour = map.GetComponent<MapBehaviour>();
+        mapBehaviour.enabled = false;
         _isPaused = true;
         pauseParent.SetActive(true);
         OpenPauseMenu();
@@ -56,6 +60,8 @@ public class MapUI : MonoBehaviour
 
     public void Unpause()
     {
+        var mapBehaviour = map.GetComponent<MapBehaviour>();
+        mapBehaviour.enabled = true;
         _isPaused = false;
         pauseParent.SetActive(false);
         pauseScreen.SetActive(false);
@@ -83,7 +89,8 @@ public class MapUI : MonoBehaviour
 
     public void Exit()
     {
-        Unpause();
+        Time.timeScale = 1f;
+        EventSystem.current.SetSelectedGameObject(null);
         SceneManager.LoadScene("Title", LoadSceneMode.Single);
     }
     

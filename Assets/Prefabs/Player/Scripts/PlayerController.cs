@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
             JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
             JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C),
             Move = new Vector2(horizontal, vertical),
-            Crouch = Input.GetAxisRaw("Vertical") < 0
+            Crouch = vertical < 0
         };
 
         if (stats.SnapInput)

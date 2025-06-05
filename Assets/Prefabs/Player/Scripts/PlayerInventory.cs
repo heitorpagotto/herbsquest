@@ -125,6 +125,9 @@ public class PlayerInventory : MonoBehaviour
         
         OnPlayerDeath?.Invoke();
 
+        var control = gameObject.GetComponent<PlayerController>();
+        control.enabled = false;
+
         StartCoroutine(HandleSceneReload());
     }
 
@@ -146,7 +149,6 @@ public class PlayerInventory : MonoBehaviour
 
         var sceneName = SceneManager.GetActiveScene().name;
         
-        Debug.Log(sceneName);
         
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }

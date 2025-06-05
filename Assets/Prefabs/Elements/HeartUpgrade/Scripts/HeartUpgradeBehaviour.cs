@@ -17,6 +17,9 @@ public class HeartUpgradeBehaviour : MonoBehaviour
         
         AudioManager.Instance?.PlaySfx("HeartUpgradeCollect");
 
+        var boxCollider = GetComponent<BoxCollider2D>();
+        boxCollider.enabled = false;
+
         var particle = gameObject.transform.GetChild(1).GetComponent<ParticleSystem>();
         
         particle.Play();
@@ -28,6 +31,6 @@ public class HeartUpgradeBehaviour : MonoBehaviour
     {
         yield return new WaitUntil(() => !particle.IsAlive(true));
         
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 }

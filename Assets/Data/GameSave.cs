@@ -2,7 +2,6 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using JetBrains.Annotations;
 using UnityEngine;
-using File = UnityEngine.Windows.File;
 
 public static class GameSave
 {
