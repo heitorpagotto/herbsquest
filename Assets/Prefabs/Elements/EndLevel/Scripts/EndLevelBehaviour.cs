@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class EndLevelBehaviour : MonoBehaviour
 {
     [SerializeField] private int currentLevel;
+    [SerializeField] private string sceneToLoad = "Map";
 
     public event Action OnLevelEnd;
 
@@ -14,8 +15,8 @@ public class EndLevelBehaviour : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            AudioManager.Instance.PlaySfx("LevelGoal");
-            AudioManager.Instance.musicSource.Stop();
+            AudioManager.Instance?.PlaySfx("LevelGoal");
+            AudioManager.Instance?.musicSource.Stop();
             
             var controller = other.GetComponent<PlayerController>();
             controller.enabled = false;
@@ -57,10 +58,10 @@ public class EndLevelBehaviour : MonoBehaviour
 
     IEnumerator PlaySoundAndLoadMap()
     {
-        AudioManager.Instance.PlaySfx("LevelClear");
+        AudioManager.Instance?.PlaySfx("LevelClear");
         
         yield return new WaitForSeconds(4);
 
-        SceneManager.LoadScene("Map", LoadSceneMode.Single);
+        SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Single);
     }
 }

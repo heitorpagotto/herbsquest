@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Enums;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,6 +10,7 @@ public class MapBehaviour : MonoBehaviour
     [SerializeField] private LevelNode[] levels;
     [SerializeField] private Sprite[] levelSprites;
     [SerializeField] private GameObject playerCursor;
+    [SerializeField] private TextMeshProUGUI levelText;
 
     private int _currentSelectedLevel;
     private GameProgress _data;
@@ -60,7 +62,10 @@ public class MapBehaviour : MonoBehaviour
             levelIcon.transform.SetParent(gameObject.transform);
 
             if (level.Number == _currentSelectedLevel)
+            {
+                levelText.text = level.Name;
                 SetCursorPosition(level.Coordinates, false);
+            }
         }
     }
 
@@ -79,8 +84,16 @@ public class MapBehaviour : MonoBehaviour
         var currentLevelNeighbors = levels.FirstOrDefault(x => x.Number == _currentSelectedLevel)?.Neighbors;
         int? bestMatch = null;
 
-        var horizontal = Input.GetAxisRaw("Horizontal");
-        var vertical = Input.GetAxisRaw("Vertical");
+        var analogH = Input.GetAxisRaw("Horizontal");
+        var analogV = Input.GetAxisRaw("Vertical");
+        
+        // 2) Read your new D-pad axes:
+        float dpadH  = Input.GetAxisRaw("DPadHorizontal");  // -1,0,+1 from D-pad Left/Right
+        float dpadV  = Input.GetAxisRaw("DPadVertical");    // -1,0,+1 from D-pad Down/Up
+
+        // 3) Combine them. Clamp to [-1, +1] so you don’t exceed max:
+        float horizontal = Mathf.Clamp(analogH + dpadH, -1f, 1f);
+        float vertical   = Mathf.Clamp(analogV + dpadV, -1f, 1f);
 
         switch (horizontal)
         {
@@ -110,6 +123,7 @@ public class MapBehaviour : MonoBehaviour
         if (level is not { IsUnlocked: true }) return;
 
         _currentSelectedLevel = bestMatch.Value;
+        levelText.text = level.Name;
         SetCursorPosition(level.Coordinates, false);
     }
 
@@ -142,11 +156,11 @@ public class MapBehaviour : MonoBehaviour
     {
         var level = levels.FirstOrDefault(x => x.Number == _currentSelectedLevel);
         
-        AudioManager.Instance.PlaySfx("LevelEnter");
+        AudioManager.Instance?.PlaySfx("LevelEnter");
 
         if (level is { IsUnlocked: true })
         {
-            AudioManager.Instance.musicSource.Stop();
+            AudioManager.Instance?.musicSource.Stop();
             SceneManager.LoadScene(level.SceneName, LoadSceneMode.Single);
         }
     }

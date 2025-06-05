@@ -32,6 +32,9 @@ public class MenuHandler : MonoBehaviour
         OpenMainMenu(false);
         
         AudioManager.Instance.PlayMusic("MainTheme", 30f);
+        
+        musicSlider.value = AudioManager.Instance?.musicSource.volume ?? 0.5f;
+        sfxSlider.value = AudioManager.Instance?.sfxSource.volume ?? 0.5f;
     }
 
     public void OpenSettingsMenu()

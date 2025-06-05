@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class EnemyBehaviour : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
+    [SerializeField] private bool avoidPits = false;
 
     [Header("Environment Check")] 
     [SerializeField]
@@ -51,14 +52,20 @@ public abstract class EnemyBehaviour : MonoBehaviour
         _rigidbody.linearVelocity = new Vector2(direction * speed, _rigidbody.linearVelocity.y);
         
         bool hitWall= Physics2D.OverlapCircle(wallCheck.position, checkRadius, levelLayer);
+        bool noGround = !Physics2D.OverlapCircle(groundCheck.position, checkRadius, levelLayer) && avoidPits;
 
-        // Debug.Log(Physics2D.Raycast(transform.position, facingDirection, .1f, levelLayer).distance);
-        
-        if (hitWall)
+        if (hitWall || noGround)
             FlipDirection();
-        
-        // if (Physics2D.Raycast(transform.position, facingDirection, .1f, levelLayer))
-        //     FlipDirection();
+    }
+
+    public void StopPatrol()
+    {
+        _shouldPatrol = false;
+    }
+
+    public void StartPatrol()
+    {
+        _shouldPatrol = true;
     }
 
     void FlipDirection()
@@ -68,6 +75,10 @@ public abstract class EnemyBehaviour : MonoBehaviour
         Vector3 wPos = wallCheck.localPosition;
         wPos.x *= -1f;
         wallCheck.localPosition = wPos;
+        
+        Vector3 gPos = groundCheck.localPosition;
+        gPos.x *= -1f;
+        groundCheck.localPosition = gPos;
         
         _spriteRenderer.flipX = _facingRight;
     }

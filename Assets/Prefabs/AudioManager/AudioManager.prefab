@@ -187,9 +187,11 @@ MonoBehaviour:
   - Name: Level3Theme
     Clip: {fileID: 8300000, guid: a7364c8288bb97b46b7792f972723fdc, type: 3}
   - Name: Intro
-    Clip: {fileID: 8300000, guid: 7a7b3d92978050f4ba991f98b4ffb536, type: 3}
+    Clip: {fileID: 8300000, guid: 1b179a24ad7255a4d9d5a2a34aa89042, type: 3}
   - Name: Dead
     Clip: {fileID: 8300000, guid: e3a577dd19299084a824673895688762, type: 3}
+  - Name: Outro
+    Clip: {fileID: 8300000, guid: 96fd12a26e116f64c86cc3ba2c44835c, type: 3}
   sfxSounds:
   - Name: PlayerJump
     Clip: {fileID: 8300000, guid: 67e1912e140fb8249986e5b2df0c8072, type: 3}

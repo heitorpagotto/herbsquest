@@ -21,6 +21,10 @@ public class UIBehaviour : MonoBehaviour
     private GameObject pauseFirstOption;
     [SerializeField]
     private GameObject pauseOptionsFirstOption;
+    [SerializeField]
+    private Slider musicSlider;
+    [SerializeField]
+    private Slider sfxSlider;
 
     private bool _isPaused;
     
@@ -30,6 +34,9 @@ public class UIBehaviour : MonoBehaviour
         UpdateCoinUI();
         UpdateEmptyHealth();
         UpdateFilledHealth();
+
+        musicSlider.value = AudioManager.Instance?.musicSource.volume ?? 0.5f;
+        sfxSlider.value = AudioManager.Instance?.sfxSource.volume ?? 0.5f;
     }
 
     void Update()
@@ -83,9 +90,20 @@ public class UIBehaviour : MonoBehaviour
         
         EventSystem.current.SetSelectedGameObject(pauseOptionsFirstOption);
     }
+    
+    public void ChangeMusicValue()
+    {
+        AudioManager.Instance?.ChangeMusicVolume(musicSlider.value);
+    }
+    
+    public void ChangeSfxValue()
+    {
+        AudioManager.Instance?.ChangeSfxVolume(sfxSlider.value);
+    }
 
     public void ExitLevel()
     {
+        Unpause();
         SceneManager.LoadScene("Map", LoadSceneMode.Single);
     }
 

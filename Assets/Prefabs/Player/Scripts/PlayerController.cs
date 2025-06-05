@@ -74,11 +74,22 @@ public class PlayerController : MonoBehaviour, IPlayerController
             return;
         }
         
+        var analogH = Input.GetAxisRaw("Horizontal");
+        var analogV = Input.GetAxisRaw("Vertical");
+        
+        // 2) Read your new D-pad axes:
+        float dpadH  = Input.GetAxisRaw("DPadHorizontal");  // -1,0,+1 from D-pad Left/Right
+        float dpadV  = Input.GetAxisRaw("DPadVertical");    // -1,0,+1 from D-pad Down/Up
+
+        // 3) Combine them. Clamp to [-1, +1] so you don’t exceed max:
+        float horizontal = Mathf.Clamp(analogH + dpadH, -1f, 1f);
+        float vertical   = Mathf.Clamp(analogV + dpadV, -1f, 1f);
+        
         _frameInput = new FrameInput
         {
             JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
             JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C),
-            Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")),
+            Move = new Vector2(horizontal, vertical),
             Crouch = Input.GetAxisRaw("Vertical") < 0
         };
 

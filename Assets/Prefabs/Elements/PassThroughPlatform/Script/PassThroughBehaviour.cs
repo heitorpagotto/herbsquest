@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PassThroughBehaviour : MonoBehaviour
 {
-    [SerializeField] private Transform playerPosition;
-    
     private BoxCollider2D _boxCollider;
     private SpriteRenderer _spriteRenderer;
     
@@ -14,19 +12,6 @@ public class PassThroughBehaviour : MonoBehaviour
         _boxCollider = GetComponent<BoxCollider2D>();
         _spriteRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         SetCorrectCollision();
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        StartCoroutine(CanEnableBoxCollider());
-    }
-
-    IEnumerator CanEnableBoxCollider()
-    {
-        yield return new WaitForEndOfFrame();
-        
-        _boxCollider.enabled = playerPosition.position.y > gameObject.transform.position.y;
     }
 
     void SetCorrectCollision()
